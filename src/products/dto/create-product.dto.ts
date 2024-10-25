@@ -4,7 +4,7 @@ import { IsNumber, IsOptional, IsString, Min } from "class-validator";
 
 export class CreateProductDto {
 
-    @IsString()
+    @IsString({})
     public name: string;
 
     @IsNumber({
