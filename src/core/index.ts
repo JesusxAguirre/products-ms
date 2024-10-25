@@ -1,2 +1,2 @@
-export { PaginationDto } from './dto/pagination.dto';
+export { PaginationDto, ResponsePaginationDto } from './dto/pagination.dto';
 
