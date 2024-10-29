@@ -7,11 +7,10 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(private readonly productsService: ProductsService) {}
 
   @MessagePattern('create')
   create(@Payload() createProductDto: CreateProductDto) {
-
     return this.productsService.create(createProductDto);
   }
 
@@ -33,5 +32,10 @@ export class ProductsController {
   @MessagePattern('remove')
   remove(@Payload('id', ParseUUIDPipe) id: string) {
     return this.productsService.remove(id);
+  }
+
+  @MessagePattern('validate_products')
+  validateProducts(@Payload() ids: string[]) {
+    return this.productsService.validateProducts(ids);
   }
 }

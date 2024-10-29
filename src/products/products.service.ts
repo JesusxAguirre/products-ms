@@ -35,7 +35,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
     const totalItems = await this.product.count({
       where: {
-        is_active: true,
+        isActive: true,
       },
     });
 
@@ -43,7 +43,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
       skip: (page - 1) * limit,
       take: limit,
       where: {
-        is_active: true,
+        isActive: true,
       },
     });
     const responseProducts = plainToInstance(ResponseProductDto, products);
@@ -60,7 +60,8 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     const product = await this.product.findUnique({
       where: {
         id: id,
-        is_active: true,
+
+        isActive: true,
       },
     });
 
@@ -97,8 +98,29 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
         id: id,
       },
       data: {
-        is_active: false,
+        isActive: false,
       },
     });
+  }
+
+  async validateProducts(ids: string[]) {
+    ids = Array.from(new Set(ids));
+
+    const products = await this.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    if (products.length !== ids.length) {
+      throw new RpcException({
+        message: 'Some products not found',
+        status: HttpStatus.BAD_REQUEST,
+      });
+    }
+
+    return products;
   }
 }
