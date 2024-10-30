@@ -1,33 +1,32 @@
-import { Expose, Transform, Type } from "class-transformer";
-import { IsOptional, IsPositive, ValidateNested } from "class-validator";
+import { Expose, Transform, Type } from 'class-transformer';
+import { IsOptional, IsPositive, ValidateNested } from 'class-validator';
 
 export class PaginationDto {
-    @IsPositive()
-    @IsOptional()
-    @Type(() => Number)
-    public page?: number = 1;
+  @IsPositive()
+  @IsOptional()
+  @Type(() => Number)
+  public page?: number = 1;
 
-    @IsPositive()
-    @IsOptional()
-    @Type(() => Number)
-    public limit?: number = 10;
+  @IsPositive()
+  @IsOptional()
+  @Type(() => Number)
+  public limit?: number = 10;
 }
 
-export class ResponsePaginationDto<T> {
-    @IsPositive()
+export class ResponsePaginationDto {
+  @IsPositive()
+  public page: number;
 
-    public page: number;
+  @IsPositive()
+  public totalItems: number;
 
-    @IsPositive()
-    public totalItems: number;
+  @IsPositive()
+  public totalPages: number;
 
-    @IsPositive()
-    public totalPages: number;
+  @Type(() => Object)
+  items: any;
 
-    @Type(() => Object)
-    public items: T[];
-
-    constructor(partial: Partial<ResponsePaginationDto<T>>) {
-        Object.assign(this, partial);
-    }
+  constructor(partial: Partial<ResponsePaginationDto>) {
+    Object.assign(this, partial);
+  }
 }

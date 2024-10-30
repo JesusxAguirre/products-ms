@@ -28,9 +28,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     return plainToInstance(ResponseProductDto, new_product);
   }
 
-  async findAll(
-    paginationDto: PaginationDto,
-  ): Promise<ResponsePaginationDto<ResponseProductDto>> {
+  async findAll(paginationDto: PaginationDto): Promise<ResponsePaginationDto> {
     const { page, limit } = paginationDto;
 
     const totalItems = await this.product.count({
@@ -46,12 +44,13 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
         isActive: true,
       },
     });
+
     const responseProducts = plainToInstance(ResponseProductDto, products);
 
     return new ResponsePaginationDto({
-      page: page,
+      page,
       totalPages: Math.ceil(totalItems / limit),
-      totalItems: totalItems,
+      totalItems,
       items: responseProducts,
     });
   }
